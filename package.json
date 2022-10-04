@@ -1,0 +1,20 @@
+{
+  "name": "ssource",
+  "version": "0.0.1",
+  "description": "Discord bot that pushes new open-source repositories to developers for them to work on",
+  "main": "index.js",
+  "repository": "https://github.com/cytronicoder/ssource.git",
+  "author": "Zeyu Yao <novodoodle@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "discord.js": "^14.5.0",
+    "dotenv": "^16.0.3"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "lint": "eslint . --ext .js"
+  },
+  "devDependencies": {
+    "eslint": "^8.24.0"
+  }
+}
