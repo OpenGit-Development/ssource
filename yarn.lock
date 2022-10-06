@@ -170,9 +170,9 @@
     "@octokit/request-error" "^3.0.0"
     "@octokit/types" "^7.0.0"
 
-"@octokit/core@^4.0.0", "@octokit/core@^4.0.4":
+"@octokit/core@^4.0.0", "@octokit/core@^4.0.4", "@octokit/core@^4.0.5":
   version "4.0.5"
-  resolved "https://registry.npmjs.org/@octokit/core/-/core-4.0.5.tgz"
+  resolved "https://registry.yarnpkg.com/@octokit/core/-/core-4.0.5.tgz#589e68c0a35d2afdcd41dafceab072c2fbc6ab5f"
   integrity sha512-4R3HeHTYVHCfzSAi0C6pbGXV8UDI5Rk+k3G7kLVNckswN9mvpOzW9oENfjfH3nEmzg8y3AmKmzs8Sg6pLCeOCA==
   dependencies:
     "@octokit/auth-token" "^3.0.0"

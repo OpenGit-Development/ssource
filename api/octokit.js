@@ -1,11 +1,20 @@
 require("dotenv").config();
 
-import { Octokit, App } from "octokit";
+const { Octokit } = require("@octokit/core");
 
 // Octokit.js
 const octokit = new Octokit({
-  // Personal Access token (silvermango) hidden in .env locally
-  auth: process.env.ACCESS_TOKEN,
+  auth: process.env.GITHUB_TOKEN,
 });
 
-await octokit.request("GET /search/repositories", {});
+// Get the authenticated user to check if the token is valid
+octokit.request("GET /user").then(({ data }) => {
+  if (data === null) {
+    console.error(
+      "Error: Invalid token. Please check your .env file and update the GITHUB_TOKEN value."
+    );
+  } else {
+    console.log("Octokit login successful!");
+    // console.log(data);
+  }
+});

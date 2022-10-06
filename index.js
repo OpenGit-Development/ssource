@@ -1,7 +1,7 @@
 require("dotenv").config();
 
 const { Client, GatewayIntentBits } = require("discord.js");
-const { BOT_TOKEN } = process.env;
+const { DISCORD_BOT_TOKEN } = process.env;
 
 // Create a new client instance
 const client = new Client({
@@ -14,4 +14,8 @@ client.on("ready", () => {
 });
 
 // Login
-client.login(BOT_TOKEN);
+try {
+  client.login(DISCORD_BOT_TOKEN);
+} catch (error) {
+  console.error(error);
+}
