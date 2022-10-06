@@ -3,8 +3,8 @@ require("dotenv").config();
 import { Octokit, App } from "octokit";
 
 // Octokit.js
-// https://github.com/octokit/core.js#readme
 const octokit = new Octokit({
+  // Personal Access token (silvermango) hidden in .env locally
   auth: process.env.ACCESS_TOKEN,
 });
 
