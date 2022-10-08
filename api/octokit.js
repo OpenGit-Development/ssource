@@ -41,7 +41,15 @@ async function getLatestRelease(owner, repository) {
   return data;
 }
 
+// Experimental: get a random repository
+async function getRandomRepository() {
+  const { data } = await octokit.request("GET /repositories");
+  const randomIndex = Math.floor(Math.random() * data.length);
+  return data[randomIndex];
+}
+
 module.exports = {
   getRepositoryInfo,
   getLatestRelease,
+  getRandomRepository,
 };
