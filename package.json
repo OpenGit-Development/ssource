@@ -15,6 +15,7 @@
   "scripts": {
     "start": "node index.js",
     "deploy-commands": "node deploy-commands.js",
+    "remove-commands": "node remove-commands.js",
     "lint": "eslint . --ext .js"
   },
   "devDependencies": {
