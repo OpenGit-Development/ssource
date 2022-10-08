@@ -6,6 +6,12 @@ const path = require("node:path");
 const { DISCORD_BOT_TOKEN } = process.env;
 
 const client = require("./utils/client.js");
+import {
+  getLatestRelease,
+  getRandomRepository,
+  getRepositoryInfo,
+  getRepositories,
+} from "./api/octokit.js";
 
 client.commands = new Collection();
 const commandsPath = path.join(__dirname, "commands");

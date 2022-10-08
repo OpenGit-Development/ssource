@@ -48,8 +48,17 @@ async function getRandomRepository() {
   return data[randomIndex];
 }
 
+// Get a list of repositories based on a certain query
+const getRepositories = async (query) => {
+  const { data } = await octokit.rest.search.repos({
+    q: query,
+  });
+  return data.items;
+};
+
 module.exports = {
   getRepositoryInfo,
   getLatestRelease,
   getRandomRepository,
+  getRepositories,
 };
