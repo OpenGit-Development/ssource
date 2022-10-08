@@ -7,7 +7,7 @@ module.exports = {
     .setDescription("Replies with \"pong!\" and latency"),
   async execute(interaction) {
     const embed = new EmbedBuilder()
-      .setColor("#D4AFB9")
+      .setColor("#171515")
       .setTitle("Pong!")
       .setDescription(
         `Roundtrip latency is ${

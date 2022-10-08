@@ -16,7 +16,7 @@ module.exports = {
       .sort((a, b) => a.name.localeCompare(b.name));
 
     const embed = new EmbedBuilder()
-      .setColor("#D4AFB9")
+      .setColor("#171515")
       .setTitle("Commands")
       .addFields(
         commands.map((command) => {

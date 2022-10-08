@@ -17,6 +17,7 @@ module.exports = {
         .setDescription("The repository to get the latest release of")
         .setRequired(true)
     ),
+
   async execute(interaction) {
     await interaction.deferReply();
     const owner = interaction.options.getString("owner");
@@ -28,7 +29,7 @@ module.exports = {
     // console.log(info);
 
     const embed = new EmbedBuilder()
-      .setColor("#D4AFB9")
+      .setColor("#171515")
       .setTitle(release.tag_name)
       .setDescription(release.body)
       .setURL(release.html_url)
