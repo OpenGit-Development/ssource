@@ -20,7 +20,7 @@ octokit.request("GET /user").then(({ data }) => {
 });
 
 // Get general information about a repository
-async function getRepositoryInfo(owner, repository) {
+const getRepositoryInfo = async (owner, repository) => {
   const { data } = await octokit.request("GET /repos/{owner}/{repo}", {
     owner,
     repo: repository,
@@ -30,7 +30,7 @@ async function getRepositoryInfo(owner, repository) {
 }
 
 // Get the latest release for a repository
-async function getLatestRelease(owner, repository) {
+const getLatestRelease = async (owner, repository) => {
   const { data } = await octokit.request(
     `GET /repos/${owner}/${repository}/releases/latest`,
     {
@@ -42,7 +42,7 @@ async function getLatestRelease(owner, repository) {
 }
 
 // Experimental: get a random repository
-async function getRandomRepository() {
+const getRandomRepository = async () => {
   const { data } = await octokit.request("GET /repositories");
   const randomIndex = Math.floor(Math.random() * data.length);
   return data[randomIndex];
