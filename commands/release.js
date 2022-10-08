@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
-const { getRepositoryInfo, getLatestRelease } = require("../api/octokit");
+const { getLatestRelease } = require("../api/octokit");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -19,11 +19,9 @@ module.exports = {
     ),
 
   async execute(interaction) {
-    await interaction.deferReply();
     const owner = interaction.options.getString("owner");
     const repository = interaction.options.getString("repository");
 
-    const info = await getRepositoryInfo(owner, repository);
     const release = await getLatestRelease(owner, repository);
 
     // console.log(info);
@@ -32,10 +30,8 @@ module.exports = {
       .setColor("#171515")
       .setTitle(release.tag_name)
       .setDescription(release.body)
-      .setURL(release.html_url)
+      .setURL(release.html_url);
 
-      .setThumbnail(info.owner.avatar_url);
-
-    await interaction.editReply({ embeds: [embed] });
+    await interaction.reply({ embeds: [embed] });
   },
 };

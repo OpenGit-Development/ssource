@@ -4,7 +4,7 @@ const client = require("../utils/client");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("ping")
-    .setDescription("Replies with \"pong!\" and latency"),
+    .setDescription('Replies with "pong!" and latency'),
   async execute(interaction) {
     const embed = new EmbedBuilder()
       .setColor("#171515")
@@ -13,7 +13,7 @@ module.exports = {
         `Roundtrip latency is ${
           Date.now() - interaction.createdTimestamp
         }ms. Websocket heartbeat is ${Math.round(client.ws.ping)}ms`
-      )
+      );
 
     await interaction.reply({ embeds: [embed] });
   },
