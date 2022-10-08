@@ -18,3 +18,30 @@ octokit.request("GET /user").then(({ data }) => {
     // console.log(data);
   }
 });
+
+// Get general information about a repository
+async function getRepositoryInfo(owner, repository) {
+  const { data } = await octokit.request("GET /repos/{owner}/{repo}", {
+    owner,
+    repo: repository,
+  });
+
+  return data;
+}
+
+// Get the latest release for a repository
+async function getLatestRelease(owner, repository) {
+  const { data } = await octokit.request(
+    `GET /repos/${owner}/${repository}/releases/latest`,
+    {
+      owner,
+      repo: repository,
+    }
+  );
+  return data;
+}
+
+module.exports = {
+  getRepositoryInfo,
+  getLatestRelease,
+};
