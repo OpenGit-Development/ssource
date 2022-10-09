@@ -30,7 +30,7 @@ const getRepositoryInfo = async (owner, repository) => {
   } catch (error) {
     return null;
   }
-}
+};
 
 // Get the latest release for a repository
 const getLatestRelease = async (owner, repository) => {
@@ -46,24 +46,25 @@ const getLatestRelease = async (owner, repository) => {
   } catch (error) {
     return null;
   }
-}
+};
 
 // Experimental: get a random repository
 const getRandomRepository = async () => {
   const { data } = await octokit.request("GET /repositories");
   const randomIndex = Math.floor(Math.random() * data.length);
   return data[randomIndex];
-}
+};
 
 // Get a list of repositories based on a certain query
-const getRepositories = async (query) => {
+const getRepositories = async (text, lang, num) => {
+  query = `${text}+language:${lang}&per_page:${num}&page:1`;
   try {
     const { data } = await octokit.request("GET /search/repositories", {
       q: query,
     });
     return data;
   } catch (error) {
-    return null;
+    console.log(error);
   }
 };
 
