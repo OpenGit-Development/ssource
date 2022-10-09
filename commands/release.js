@@ -7,22 +7,31 @@ module.exports = {
     .setDescription("Get the latest release of a repository on GitHub")
     .addStringOption((option) =>
       option
-        .setName("owner")
-        .setDescription("The owner of the repository")
-        .setRequired(true)
-    )
-    .addStringOption((option) =>
-      option
         .setName("repository")
-        .setDescription("The repository to get the latest release of")
+        .setDescription(
+          "The repository to get the latest release of (e.g. cytronicoder/ssource)"
+        )
         .setRequired(true)
     ),
 
   async execute(interaction) {
-    const owner = interaction.options.getString("owner");
     const repository = interaction.options.getString("repository");
+    // split the repository into owner and name
+    const [owner, name] = repository.split("/");
 
-    const release = await getLatestRelease(owner, repository);
+    if (!owner || !name) {
+      const errorEmbed = new EmbedBuilder()
+        .setColor("#ff0000")
+        .setTitle("Error")
+        .setDescription(
+          `Invalid repository: ${repository}. Please use the format owner/repository.`
+        );
+
+      await interaction.reply({ embeds: [errorEmbed] });
+      return;
+    }
+
+    const release = await getLatestRelease(owner, name);
 
     // If the release is null, it means that the repository doesn't have any releases
     if (!release) {
@@ -30,7 +39,7 @@ module.exports = {
         .setColor("#ff0000")
         .setTitle("Error")
         .setDescription(
-          `Could not find a release for ${owner}/${repository} on GitHub. Make sure the repository exists and has at least one release.`
+          `Could not find a release for ${owner}/${repository} on GitHub.`
         );
 
       await interaction.reply({ embeds: [errorEmbed] });
