@@ -21,24 +21,31 @@ octokit.request("GET /user").then(({ data }) => {
 
 // Get general information about a repository
 const getRepositoryInfo = async (owner, repository) => {
-  const { data } = await octokit.request("GET /repos/{owner}/{repo}", {
-    owner,
-    repo: repository,
-  });
-
-  return data;
+  try {
+    const { data } = await octokit.request("GET /repos/{owner}/{repo}", {
+      owner,
+      repo: repository,
+    });
+    return data;
+  } catch (error) {
+    return null;
+  }
 }
 
 // Get the latest release for a repository
 const getLatestRelease = async (owner, repository) => {
-  const { data } = await octokit.request(
-    `GET /repos/${owner}/${repository}/releases/latest`,
-    {
-      owner,
-      repo: repository,
-    }
-  );
-  return data;
+  try {
+    const { data } = await octokit.request(
+      "GET /repos/{owner}/{repo}/releases/latest",
+      {
+        owner,
+        repo: repository,
+      }
+    );
+    return data;
+  } catch (error) {
+    return null;
+  }
 }
 
 // Experimental: get a random repository
@@ -50,10 +57,14 @@ const getRandomRepository = async () => {
 
 // Get a list of repositories based on a certain query
 const getRepositories = async (query) => {
-  const { data } = await octokit.rest.search.repos({
-    q: query,
-  });
-  return data.items;
+  try {
+    const { data } = await octokit.request("GET /search/repositories", {
+      q: query,
+    });
+    return data;
+  } catch (error) {
+    return null;
+  }
 };
 
 module.exports = {

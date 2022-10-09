@@ -24,8 +24,20 @@ module.exports = {
 
     const release = await getLatestRelease(owner, repository);
 
-    // console.log(info);
+    // If the release is null, it means that the repository doesn't have any releases
+    if (!release) {
+      const errorEmbed = new EmbedBuilder()
+        .setColor("#ff0000")
+        .setTitle("Error")
+        .setDescription(
+          `Could not find a release for ${owner}/${repository} on GitHub. Make sure the repository exists and has at least one release.`
+        );
 
+      await interaction.reply({ embeds: [errorEmbed] });
+      return;
+    }
+
+    // Create the embed
     const embed = new EmbedBuilder()
       .setColor("#171515")
       .setTitle(release.tag_name)
