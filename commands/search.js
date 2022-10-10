@@ -62,7 +62,7 @@ module.exports = {
     // console.log(results.items.map((item) => item.full_name));
 
     // If the results are empty, it means that no repositories were found
-    if (results.length === 0) {
+    if (results.total_count === 0) {
       const errorEmbed = new EmbedBuilder()
         .setColor("#ff0000")
         .setTitle("Error")
