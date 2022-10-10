@@ -16,21 +16,21 @@ module.exports = {
         .setName("language")
         .setDescription("The language to search for")
         .addChoices(
-            // TODO: Figure out a way to get the languages dynamically
-            { name: "JavaScript", value: "javascript" },
-            { name: "TypeScript", value: "typescript" },
-            { name: "Python", value: "python" },
-            { name: "Java", value: "java" },
-            { name: "C#", value: "c#" },
-            { name: "C++", value: "c++" },
-            { name: "C", value: "c" },
-            { name: "Go", value: "go" },
-            { name: "Ruby", value: "ruby" },
-            { name: "PHP", value: "php" },
-            { name: "Swift", value: "swift" },
-            { name: "Kotlin", value: "kotlin" },
-            { name: "Rust", value: "rust" },
-            { name: "Dart", value: "dart" },
+          // TODO: Figure out a way to get the languages dynamically
+          { name: "JavaScript", value: "javascript" },
+          { name: "TypeScript", value: "typescript" },
+          { name: "Python", value: "python" },
+          { name: "Java", value: "java" },
+          { name: "C#", value: "c#" },
+          { name: "C++", value: "c++" },
+          { name: "C", value: "c" },
+          { name: "Go", value: "go" },
+          { name: "Ruby", value: "ruby" },
+          { name: "PHP", value: "php" },
+          { name: "Swift", value: "swift" },
+          { name: "Kotlin", value: "kotlin" },
+          { name: "Rust", value: "rust" },
+          { name: "Dart", value: "dart" }
         )
         .setRequired(true)
     )
@@ -48,13 +48,13 @@ module.exports = {
 
     // Limit the maximum number of results to 25
     if (limit > 25) {
-        const errorEmbed = new EmbedBuilder()
-            .setColor("#ff0000")
-            .setTitle("Error")
-            .setDescription("The limit cannot be greater than 25.");
+      const errorEmbed = new EmbedBuilder()
+        .setColor("#ff0000")
+        .setTitle("Error")
+        .setDescription("The limit cannot be greater than 25.");
 
-        await interaction.reply({ embeds: [errorEmbed] });
-        return;
+      await interaction.reply({ embeds: [errorEmbed] });
+      return;
     }
 
     const results = await searchRepositories(query, language, limit);
@@ -77,9 +77,11 @@ module.exports = {
 
     // Create the embed
     const embed = new EmbedBuilder()
-      .setColor("#171515")
+      .setColor("#50C878")
       .setTitle(`Search results for "${query}" in ${language}`)
-      .setDescription(`Found ${results.total_count} repositories - showing ${limit} results`)
+      .setDescription(
+        `Found ${results.total_count} repositories - showing ${limit} results`
+      )
 
       // repositories
       .addFields(
