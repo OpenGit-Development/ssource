@@ -62,7 +62,7 @@ module.exports = {
     // console.log(results.items.map((item) => item.full_name));
 
     // If the results are empty, it means that no repositories were found
-    if (results.total_count === 0) {
+    if (results.items.length === 0) {
       const errorEmbed = new EmbedBuilder()
         .setColor("#ff0000")
         .setTitle("Error")
@@ -80,7 +80,7 @@ module.exports = {
       .setColor("#50C878")
       .setTitle(`Search results for "${query}" in ${language}`)
       .setDescription(
-        `Found ${results.total_count} repositories - showing ${limit} results`
+        `Found ${results.total_count} repositories. Showing ${results.items.length} results.`
       )
 
       // repositories
