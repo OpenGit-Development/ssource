@@ -56,15 +56,19 @@ const getRandomRepository = async () => {
 };
 
 // Get a list of repositories based on a certain query
-const getRepositories = async (text, lang, num) => {
-  query = `${text}+language:${lang}&per_page:${num}&page:1`;
+const searchRepositories = async (query, language, limit) => {
   try {
-    const { data } = await octokit.request("GET /search/repositories", {
-      q: query,
-    });
+    const { data } = await octokit.request(
+      "GET /search/repositories?q={query}+language:{language}&per_page={limit}",
+      {
+        query,
+        language,
+        limit,
+      }
+    );
     return data;
   } catch (error) {
-    console.log(error);
+    return null;
   }
 };
 
@@ -72,5 +76,5 @@ module.exports = {
   getRepositoryInfo,
   getLatestRelease,
   getRandomRepository,
-  getRepositories,
+  searchRepositories,
 };
