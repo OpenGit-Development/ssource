@@ -72,6 +72,18 @@ const searchRepositories = async (query, language, limit) => {
   }
 };
 
+// Get the current active issues in a repository
+const getIssues = async (owner, repo) => {
+  try {
+    const { data } = await octokit.request("GET /repos/{owner}/{repo}/issues", {
+      owner: owner,
+      repo: repo,
+    });
+  } catch (err) {
+    return null;
+  }
+};
+
 module.exports = {
   getRepositoryInfo,
   getLatestRelease,
