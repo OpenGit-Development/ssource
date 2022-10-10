@@ -1,28 +1,10 @@
 from firebase_admin import db
 import firebase_admin
 
-def validateData(config):
-    '''
-    Returns whether inputted data is valid
-    :param config:
-    :return: True if valid data and False if invalid.
-    '''
-
-    # Making sure all the keys are here
-    try:
-        interval = config["interval"]
-        langs = config["langs"]
-        topics = config["topics"]
-    except KeyError:
-        return False
-
-    # Make sure everything is the correct type
-    return type(interval) is int and type(langs) is list and type(topics) is list
-
 def getServerSnapshot(serverID):
     '''
     Gets Firebase DB snapshot of server config.
-    :param serverID: The guild ID from Discord.
+    :param serverID: The guild ID from Discord.d
     :return: The snapshot of the config from our Firebase DB.
     '''
     ref = db.reference("/servers")

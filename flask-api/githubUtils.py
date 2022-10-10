@@ -3,6 +3,43 @@ import random
 
 client = Github()
 
+def validateData(config):
+    '''
+    Returns whether inputted data is valid
+    :param config:
+    :return: True if valid data and False if invalid.
+    '''
+
+    if type(config["id"]) != int or type(config["interval"]) != int \
+        or type(config["langs"]) != list or type(config["topics"]) != list:
+        return False
+    
+    for lang in config["langs"]:
+        if type(lang) != str:
+            return False
+        try:
+            query = createQuery(lang, "*")
+            repos = client.search_repositories(query)
+            if repos.totalCount < 5:
+                return False
+        except:
+            return False
+
+
+        
+    for topic in config["topics"]:
+        if type(topic) != str:
+            return False
+        try:
+            query = createQuery("*", topic)
+            repos = client.search_repositories(query)
+            if repos.totalCount < 5:
+                return False
+        except:
+            return False
+    
+    return True
+
 def createQuery(language, topic):
     '''
     Creates a PyGithub search query.

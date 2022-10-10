@@ -108,3 +108,5 @@ dist
 __pycache__/
 *.py[cod]
 *$py.class
+
+open_git_key.json
