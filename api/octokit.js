@@ -73,13 +73,17 @@ const searchRepositories = async (query, language, limit) => {
 };
 
 // Get the current active issues in a repository
-const getIssues = async (owner, repo) => {
+const getActiveIssues = async (owner, repo) => {
   try {
-    const { data } = await octokit.request("GET /repos/{owner}/{repo}/issues", {
-      owner: owner,
-      repo: repo,
-    });
-  } catch (err) {
+    const { data } = await octokit.request(
+      "GET /repos/{owner}/{repo}/issues?state=open",
+      {
+        owner,
+        repo,
+      }
+    );
+    return data;
+  } catch (error) {
     return null;
   }
 };
@@ -89,4 +93,5 @@ module.exports = {
   getLatestRelease,
   getRandomRepository,
   searchRepositories,
+  getActiveIssues,
 };
