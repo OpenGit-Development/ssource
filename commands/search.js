@@ -46,9 +46,20 @@ module.exports = {
     const language = interaction.options.getString("language");
     const limit = interaction.options.getInteger("limit") || 5;
 
+    // Limit the maximum number of results to 25
+    if (limit > 25) {
+        const errorEmbed = new EmbedBuilder()
+            .setColor("#ff0000")
+            .setTitle("Error")
+            .setDescription("The limit cannot be greater than 25.");
+
+        await interaction.reply({ embeds: [errorEmbed] });
+        return;
+    }
+
     const results = await searchRepositories(query, language, limit);
 
-    console.log(results.items.map((item) => item.full_name));
+    // console.log(results.items.map((item) => item.full_name));
 
     // If the results are empty, it means that no repositories were found
     if (results.length === 0) {
@@ -75,7 +86,7 @@ module.exports = {
         results.items.map((item) => {
           return {
             name: item.full_name,
-            value: item.description,
+            value: item.description + "\n" + item.html_url,
             inline: false,
           };
         })
