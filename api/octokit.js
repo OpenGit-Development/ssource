@@ -30,7 +30,7 @@ const getRepositoryInfo = async (owner, repository) => {
   } catch (error) {
     return null;
   }
-}
+};
 
 // Get the latest release for a repository
 const getLatestRelease = async (owner, repository) => {
@@ -46,21 +46,42 @@ const getLatestRelease = async (owner, repository) => {
   } catch (error) {
     return null;
   }
-}
+};
 
 // Experimental: get a random repository
 const getRandomRepository = async () => {
   const { data } = await octokit.request("GET /repositories");
   const randomIndex = Math.floor(Math.random() * data.length);
   return data[randomIndex];
-}
+};
 
 // Get a list of repositories based on a certain query
-const getRepositories = async (query) => {
+const searchRepositories = async (query, language, limit) => {
   try {
-    const { data } = await octokit.request("GET /search/repositories", {
-      q: query,
-    });
+    const { data } = await octokit.request(
+      "GET /search/repositories?q={query}+language:{language}&per_page={limit}",
+      {
+        query,
+        language,
+        limit,
+      }
+    );
+    return data;
+  } catch (error) {
+    return null;
+  }
+};
+
+// Get the current active issues in a repository
+const getActiveIssues = async (owner, repo) => {
+  try {
+    const { data } = await octokit.request(
+      "GET /repos/{owner}/{repo}/issues?state=open",
+      {
+        owner,
+        repo,
+      }
+    );
     return data;
   } catch (error) {
     return null;
@@ -71,5 +92,6 @@ module.exports = {
   getRepositoryInfo,
   getLatestRelease,
   getRandomRepository,
-  getRepositories,
+  searchRepositories,
+  getActiveIssues,
 };
