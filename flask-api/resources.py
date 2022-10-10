@@ -1,12 +1,27 @@
 from flask_restful import Resource
 from flask import request
 from firebaseUtils import getConfig, updateConfig
+from githubUtils import findRandomRepo
 from http import HTTPStatus
 
-class QueryResource(Resource):
+class RepoResource(Resource):
     def get(self):
         serverID = request.args.get('sid')
 
+        config = getConfig(serverID)
+
+        if config is None:
+            return {"msg": "Config not found"}, HTTPStatus.NOT_FOUND
+
+        randomRepo = findRandomRepo(config)
+
+        if randomRepo is None:
+            randomRepo = findRandomRepo({
+                "topics":["*"],
+                "langs":["*"]
+            })
+
+        return randomRepo, HTTPStatus.OK
 
 class ConfigResource(Resource):
 

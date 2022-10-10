@@ -2,7 +2,7 @@ from flask import Flask
 from flask_restful import Api
 import firebase_admin
 from config import Config
-from resources import ConfigResource
+from resources import ConfigResource, RepoResource
 
 def register_extensions(app):
 
@@ -24,6 +24,7 @@ def register_resources(app):
     api = Api(app)
 
     api.add_resource(ConfigResource, "/config")
+    api.add_resource(RepoResource, "/random")
 
 
 

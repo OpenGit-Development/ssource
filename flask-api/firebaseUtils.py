@@ -3,7 +3,7 @@ import firebase_admin
 
 def validateData(config):
     '''
-
+    Returns whether inputted data is valid
     :param config:
     :return: True if valid data and False if invalid.
     '''
@@ -34,7 +34,7 @@ def updateConfig(serverID,configDict):
 
     snapshot = getServerSnapshot(serverID)
 
-    if snapshot is None:
+    if not snapshot.get():
         ref = db.reference("/servers")
         serverRef = ref.push()
 
