@@ -59,6 +59,16 @@ module.exports = {
 
     const results = await searchRepositories(query, language, limit);
 
+    if (results === "rate limit exceeded") {
+      const errorEmbed = new EmbedBuilder()
+        .setColor("#ff0000")
+        .setTitle("Error")
+        .setDescription("Rate limit exceeded.");
+
+      await interaction.reply({ embeds: [errorEmbed] });
+      return;
+    }
+
     // console.log(results.items.map((item) => item.full_name));
 
     // If the results are empty, it means that no repositories were found

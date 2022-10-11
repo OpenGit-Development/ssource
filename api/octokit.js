@@ -28,6 +28,9 @@ const getRepositoryInfo = async (owner, repository) => {
     });
     return data;
   } catch (error) {
+    if (error.status === 403) {
+      return "rate_limit_exceeded";
+    }
     return null;
   }
 };
@@ -44,15 +47,25 @@ const getLatestRelease = async (owner, repository) => {
     );
     return data;
   } catch (error) {
+    if (error.status === 403) {
+      return "rate_limit_exceeded";
+    }
     return null;
   }
 };
 
 // Experimental: get a random repository
 const getRandomRepository = async () => {
-  const { data } = await octokit.request("GET /repositories");
-  const randomIndex = Math.floor(Math.random() * data.length);
-  return data[randomIndex];
+  try {
+    const { data } = await octokit.request("GET /repositories");
+    const randomIndex = Math.floor(Math.random() * data.length);
+    return data[randomIndex];
+  } catch (error) {
+    if (error.status === 403) {
+      return "rate_limit_exceeded";
+    }
+    return null;
+  }
 };
 
 // Get a list of repositories based on a certain query
@@ -68,6 +81,9 @@ const searchRepositories = async (query, language, limit) => {
     );
     return data;
   } catch (error) {
+    if (error.status === 403) {
+      return "rate_limit_exceeded";
+    }
     return null;
   }
 };
@@ -84,6 +100,9 @@ const getActiveIssues = async (owner, repo) => {
     );
     return data;
   } catch (error) {
+    if (error.status === 403) {
+      return "rate_limit_exceeded";
+    }
     return null;
   }
 };
