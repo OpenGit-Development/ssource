@@ -98,7 +98,7 @@ module.exports = {
         results.items.map((item) => {
           return {
             name: item.full_name,
-            value: item.description + "\n" + item.html_url,
+            value: ( item.description || "No description" ) + "\n" + item.html_url,
             inline: false,
           };
         })
