@@ -1,5 +1,42 @@
 from firebase_admin import db
+from githubUtils import client, createQuery
 import firebase_admin
+
+
+def validateData(config):
+    '''
+    Returns whether inputted data is valid
+    :param config:
+    :return: True if valid data and False if invalid.
+    '''
+
+    if type(config["interval"]) != int \
+            or type(config["langs"]) != list or type(config["topics"]) != list:
+        return False
+
+    for lang in config["langs"]:
+        if type(lang) != str:
+            return False
+        try:
+            query = createQuery(lang, "*")
+            repos = client.search_repositories(query)
+            if repos.totalCount < 5:
+                return False
+        except:
+            return False
+
+    for topic in config["topics"]:
+        if type(topic) != str:
+            return False
+
+        query = createQuery("*", topic)
+        repos = client.search_repositories(query)
+        print(repos.totalCount)
+        if repos.totalCount < 5:
+            return False
+
+    return True
+
 
 def getServerSnapshot(serverID):
     '''

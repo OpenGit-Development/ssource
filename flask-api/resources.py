@@ -1,7 +1,7 @@
 from flask_restful import Resource
 from flask import request
-from firebaseUtils import getConfig, updateConfig
-from githubUtils import findRandomRepo, validateData
+from firebaseUtils import getConfig, updateConfig, validateData
+from githubUtils import findRandomRepo
 from http import HTTPStatus
 
 class RepoResource(Resource):
