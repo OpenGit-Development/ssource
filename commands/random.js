@@ -8,6 +8,17 @@ module.exports = {
 
   async execute(interaction) {
     const randomRepository = await getRandomRepository();
+
+    if (randomRepository === "rate limit exceeded") {
+      const errorEmbed = new EmbedBuilder()
+        .setColor("#ff0000")
+        .setTitle("Error")
+        .setDescription("Rate limit exceeded.");
+
+      await interaction.reply({ embeds: [errorEmbed] });
+      return;
+    }
+
     const info = await getRepositoryInfo(
       randomRepository.owner.login,
       randomRepository.name

@@ -46,6 +46,16 @@ module.exports = {
       return;
     }
 
+    if (release === "rate limit exceeded") {
+      const errorEmbed = new EmbedBuilder()
+        .setColor("#ff0000")
+        .setTitle("Error")
+        .setDescription("Rate limit exceeded.");
+
+      await interaction.reply({ embeds: [errorEmbed] });
+      return;
+    }
+
     // Create the embed
     const embed = new EmbedBuilder()
       .setColor("#171515")

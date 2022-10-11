@@ -59,6 +59,16 @@ module.exports = {
 
     const results = await searchRepositories(query, language, limit);
 
+    if (results === "rate limit exceeded") {
+      const errorEmbed = new EmbedBuilder()
+        .setColor("#ff0000")
+        .setTitle("Error")
+        .setDescription("Rate limit exceeded.");
+
+      await interaction.reply({ embeds: [errorEmbed] });
+      return;
+    }
+
     // console.log(results.items.map((item) => item.full_name));
 
     // If the results are empty, it means that no repositories were found
@@ -77,7 +87,7 @@ module.exports = {
 
     // Create the embed
     const embed = new EmbedBuilder()
-      .setColor("#50C878")
+      .setColor("#171515")
       .setTitle(`Search results for "${query}" in ${language}`)
       .setDescription(
         `Found ${results.total_count} repositories. Showing ${results.items.length} results.`
@@ -88,7 +98,7 @@ module.exports = {
         results.items.map((item) => {
           return {
             name: item.full_name,
-            value: item.description + "\n" + item.html_url,
+            value: ( item.description || "No description" ) + "\n" + item.html_url,
             inline: false,
           };
         })
