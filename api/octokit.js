@@ -107,10 +107,24 @@ const getActiveIssues = async (owner, repo) => {
   }
 };
 
+const getUsers = async (user) => {
+  try {
+    const { data } = await octokit.request("GET /search/users?q={user}", {
+      user,
+    });
+    return data;
+  } catch (error) {
+    if (error.status === 403) {
+      return "rate limit exceeded";
+    }
+  }
+};
+
 module.exports = {
   getRepositoryInfo,
   getLatestRelease,
   getRandomRepository,
   searchRepositories,
   getActiveIssues,
+  getUsers,
 };
