@@ -38,12 +38,17 @@ class ConfigResource(Resource):
         serverID = request.args.get('sid')
         body = request.get_json()
 
-        if not validateData(body):
-            return {"msg": "Invalid data"}, HTTPStatus.BAD_REQUEST
+        result, msg = validateData(body)
+        if result is False:
+            return { "msg": msg }, HTTPStatus.BAD_REQUEST
 
         status, config = updateConfig(serverID, body)
 
         if not status:
             return {"msg": "Error occured"}, HTTPStatus.INTERNAL_SERVER_ERROR
         else:
+            if msg == "":
+                config["msg"] = "success"
+            else:
+                config["msg"] = msg
             return config, HTTPStatus.CREATED

@@ -1,41 +1,37 @@
 from firebase_admin import db
-from githubUtils import client, createQuery
+import json
 import firebase_admin
 
+with open("validData.json", "r") as f:
+    data = json.load(f)
 
 def validateData(config):
     '''
     Returns whether inputted data is valid
     :param config:
-    :return: True if valid data and False if invalid.
+    :return: (True, warning) if valid data and (False, error) if invalid.
     '''
 
     if type(config["interval"]) != int \
             or type(config["langs"]) != list or type(config["topics"]) != list:
-        return False
+        return False, "Invalid data type"
+
+    if config["interval"] < 1:
+        return False, "Interval must be greater than 0"
+
+    if len(config["langs"]) == 0 or len(config["topics"]) == 0:
+        return False, "Must have at least one language and topic"
+
+    warning = ""
 
     for lang in config["langs"]:
-        if type(lang) != str:
-            return False
-        try:
-            query = createQuery(lang, "*")
-            repos = client.search_repositories(query)
-            if repos.totalCount < 5:
-                return False
-        except:
-            return False
+        if lang.lower() not in data["langs"]:
+            warning += lang + ', '
 
-    for topic in config["topics"]:
-        if type(topic) != str:
-            return False
+    if warning != "":
+        return True, warning[:-2] + " do not exist in our common language database, but we will still use them."
 
-        query = createQuery("*", topic)
-        repos = client.search_repositories(query)
-        print(repos.totalCount)
-        if repos.totalCount < 5:
-            return False
-
-    return True
+    return True, ""
 
 
 def getServerSnapshot(serverID):
