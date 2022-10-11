@@ -107,16 +107,35 @@ const getActiveIssues = async (owner, repo) => {
   }
 };
 
-const getUsers = async (user) => {
+const getUser = async (user) => {
   try {
-    const { data } = await octokit.request("GET /search/users?q={user}", {
+    const { data } = await octokit.request("GET /users/{user}", {
       user,
     });
     return data;
   } catch (error) {
     if (error.status === 403) {
-      return "rate limit exceeded";
+      return "rate_limit_exceeded";
     }
+    return null;
+  }
+};
+
+const searchUsers = async (query, limit) => {
+  try {
+    const { data } = await octokit.request(
+      "GET /search/users?q={query}&per_page={limit}",
+      {
+        query,
+        limit,
+      }
+    );
+    return data;
+  } catch (error) {
+    if (error.status === 403) {
+      return "rate_limit_exceeded";
+    }
+    return null;
   }
 };
 
@@ -126,5 +145,6 @@ module.exports = {
   getRandomRepository,
   searchRepositories,
   getActiveIssues,
-  getUsers,
+  getUser,
+  searchUsers,
 };

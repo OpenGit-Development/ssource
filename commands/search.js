@@ -87,7 +87,7 @@ module.exports = {
 
     // Create the embed
     const embed = new EmbedBuilder()
-      .setColor("#50C878")
+      .setColor("#171515")
       .setTitle(`Search results for "${query}" in ${language}`)
       .setDescription(
         `Found ${results.total_count} repositories. Showing ${results.items.length} results.`

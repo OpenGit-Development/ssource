@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
-const { getUsers } = require("../api/octokit");
+const { getUser, searchUsers } = require("../api/octokit");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -7,15 +7,34 @@ module.exports = {
     .setDescription("Search for a user on Github")
     .addStringOption((option) =>
       option
-        .setName("username")
-        .setDescription("The username to search for")
+        .setName("query")
+        .setDescription("The username to get information about")
         .setRequired(true)
+    )
+    .addIntegerOption((option) =>
+      option
+        .setName("limit")
+        .setDescription("The maximum number of results to return")
+        .setRequired(false)
     ),
 
   async execute(interaction) {
-    const user = interaction.options.getString("user");
+    const user = interaction.options.getString("query");
+    const limit = interaction.options.getInteger("limit") || 5;
 
-    const results = await getUsers(user);
+    const results = await getUser(user);
+
+    // console.log(results);
+
+    if (!results) {
+      const errorEmbed = new EmbedBuilder()
+        .setColor("#ff0000")
+        .setTitle("Error")
+        .setDescription(`Could not find a user with the username ${user}.`);
+
+      await interaction.reply({ embeds: [errorEmbed] });
+      return;
+    }
 
     if (results === "rate limit exceeded") {
       const errorEmbed = new EmbedBuilder()
@@ -27,37 +46,54 @@ module.exports = {
       return;
     }
 
-    // If the results are empty, it means that no repositories were found
-    if (results.items.length === 0) {
+    const userEmbed = new EmbedBuilder()
+      .setColor("#171515")
+      .setTitle(results.login)
+      .setDescription(results.bio)
+      .addFields(
+        {
+          name: "Location",
+          value: results.location || "Unknown",
+          inline: true,
+        },
+        {
+          name: "Followers",
+          value: results.followers.toString() || "0",
+          inline: true,
+        },
+        {
+          name: "Public repositories",
+          value: results.public_repos.toString() || "0",
+          inline: true,
+        }
+      )
+      .setThumbnail(results.avatar_url)
+      .setURL(results.html_url);
+
+    // send another message with similar users
+    const similarUsers = await searchUsers(user, limit);
+
+    if (similarUsers.length === 0) return;
+
+    if (similarUsers === "rate limit exceeded") {
       const errorEmbed = new EmbedBuilder()
         .setColor("#ff0000")
         .setTitle("Error")
-        .setDescription(`Could not find any user for the username, ${user}.`)
-        .addFields();
+        .setDescription("Rate limit exceeded.");
 
       await interaction.reply({ embeds: [errorEmbed] });
       return;
     }
 
-    // Create the embed
-    const embed = new EmbedBuilder()
-      .setColor("#50C878")
-      .setTitle(`Search results for "${user}"`)
-      .setDescription(
-        `Found ${results.total_count} users. Showing ${results.items.length} users.`
-      )
+    const similarUsersArray = similarUsers.items.map((user) => user.login);
+    similarUsersArray.shift();
 
-      // repositories
-      .addFields(
-        results.items.map((item) => {
-          return {
-            name: item.login,
-            value: item.html_url,
-            inline: false,
-          };
-        })
-      );
+    const similarUsersEmbed = new EmbedBuilder()
+      .setColor("#171515")
+      .setTitle("Similar users")
+      .setDescription(similarUsersArray.join(", ") || "No similar users found.");
 
-    await interaction.reply({ embeds: [embed] });
+
+    await interaction.reply({ embeds: [userEmbed, similarUsersEmbed] });
   },
 };
