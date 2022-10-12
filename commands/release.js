@@ -1,4 +1,10 @@
-const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
+const {
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle,
+  EmbedBuilder,
+  SlashCommandBuilder,
+} = require("discord.js");
 const { getLatestRelease } = require("../api/octokit");
 
 module.exports = {
@@ -54,11 +60,25 @@ module.exports = {
       .setDescription(release.body)
       .addFields(
         { name: "Author", value: release.author.login, inline: true },
-        { name: "Published at", value: new Date(release.published_at).toLocaleDateString() + " " + new Date(release.published_at).toLocaleTimeString(), inline: true },
+        {
+          name: "Published at",
+          value:
+            new Date(release.published_at).toLocaleDateString() +
+            " " +
+            new Date(release.published_at).toLocaleTimeString(),
+          inline: true,
+        }
       )
-      .setURL(release.html_url)
       .setTimestamp(new Date());
 
-    await interaction.reply({ embeds: [embed] });
+    // Create the button
+    const row = new ActionRowBuilder().addComponents(
+      new ButtonBuilder()
+        .setStyle(ButtonStyle.Link)
+        .setLabel("View on GitHub")
+        .setURL(release.html_url)
+    );
+
+    await interaction.reply({ embeds: [embed], components: [row] });
   },
 };
