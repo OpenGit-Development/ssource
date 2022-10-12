@@ -103,7 +103,7 @@ module.exports = {
               "\n" +
               item.html_url +
               "\n" +
-              `"You can work on ${item.open_issues_count} open issues"`,
+              `${item.open_issues_count} open issues available.`,
             inline: false,
           };
         })
