@@ -39,7 +39,7 @@ module.exports = {
         .setColor("#ff0000")
         .setTitle("Error")
         .setDescription(
-          `Could not find a release for ${owner}/${repository} on GitHub.`
+          `Could not find a release for ${owner}/${name} on GitHub.`
         );
 
       await interaction.reply({ embeds: [errorEmbed] });
