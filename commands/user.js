@@ -1,4 +1,10 @@
-const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
+const {
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle,
+  EmbedBuilder,
+  SlashCommandBuilder,
+} = require("discord.js");
 const { getUser, searchUsers } = require("../api/octokit");
 
 module.exports = {
@@ -67,8 +73,7 @@ module.exports = {
           inline: true,
         }
       )
-      .setThumbnail(results.avatar_url)
-      .setURL(results.html_url);
+      .setThumbnail(results.avatar_url);
 
     // send another message with similar users
     const similarUsers = await searchUsers(user, limit);
@@ -91,9 +96,21 @@ module.exports = {
     const similarUsersEmbed = new EmbedBuilder()
       .setColor("#171515")
       .setTitle("Similar users")
-      .setDescription(similarUsersArray.join(", ") || "No similar users found.");
+      .setDescription(
+        similarUsersArray.join(", ") || "No similar users found."
+      )
+      .setTimestamp(new Date());
 
+    const row = new ActionRowBuilder().addComponents(
+      new ButtonBuilder()
+        .setStyle(ButtonStyle.Link)
+        .setLabel("View on Github")
+        .setURL(results.html_url)
+    );
 
-    await interaction.reply({ embeds: [userEmbed, similarUsersEmbed] });
+    await interaction.reply({
+      embeds: [userEmbed, similarUsersEmbed],
+      components: [row],
+    });
   },
 };
