@@ -15,10 +15,12 @@ SSource is a Discord bot that allows you to discover open-source projects on Git
 - Search for open-source projects on GitHub
 - Get information about a specific project
 - Get information about a specific user
+- Get latest releases
+- Get random repositories
 
 ## Getting Started
 
-Please see the [documentation](/docs/) for more information on how to get started.
+Please see [Getting Started](/docs/getting-started.md) for more information on how to get started and [Commands](/docs/commands.md) for a detailed guide on the different commands available
 
 ## Contributing
 
