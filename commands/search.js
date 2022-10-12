@@ -99,7 +99,7 @@ module.exports = {
           return {
             name:
               item.full_name +
-              `( ${item.open_issues_count} open issues available)`,
+              ` (${item.open_issues_count} open issues available)`,
             value:
               (item.description || "No description") + "\n" + item.html_url,
             // +"\n" +
