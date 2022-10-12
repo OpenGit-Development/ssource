@@ -97,13 +97,13 @@ module.exports = {
       .addFields(
         results.items.map((item) => {
           return {
-            name: item.full_name,
+            name:
+              item.full_name +
+              `(${item.open_issues_count} open issues available)`,
             value:
-              (item.description || "No description") +
-              "\n" +
-              item.html_url +
-              "\n" +
-              `${item.open_issues_count} open issues available.`,
+              (item.description || "No description") + "\n" + item.html_url,
+            // +"\n" +
+            // `${item.open_issues_count} open issues available.`,
             inline: false,
           };
         })
