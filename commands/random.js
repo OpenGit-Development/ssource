@@ -49,7 +49,8 @@ module.exports = {
           inline: true,
         }
       )
-      .setThumbnail(info.owner.avatar_url);
+      .setThumbnail(info.owner.avatar_url)
+      .setTimestamp(new Date());
 
     const row = new ActionRowBuilder()
       .addComponents(
@@ -114,31 +115,30 @@ module.exports = {
               value: newInfo.forks_count.toString() || "Unknown",
               inline: true,
             }
-          );
+          )
+          .setTimestamp(new Date());
 
         await i.update({ embeds: [newEmbed] });
       }
     });
 
     collector.on("end", async (collected) => {
-
       if (collected.size === 0) {
         await interaction.editReply({ components: [] });
       }
-      
+
       // When the collector times out, disable the button that gets a new random repository
-      const disabledRow = new ActionRowBuilder()
-        .addComponents(
-          new ButtonBuilder()
-            .setStyle(ButtonStyle.Link)
-            .setLabel("View on GitHub")
-            .setURL(info.html_url),
-          new ButtonBuilder()
-            .setStyle(ButtonStyle.Primary)
-            .setLabel("Get another random repository")
-            .setCustomId("random")
-            .setDisabled(true)
-        );
+      const disabledRow = new ActionRowBuilder().addComponents(
+        new ButtonBuilder()
+          .setStyle(ButtonStyle.Link)
+          .setLabel("View on GitHub")
+          .setURL(info.html_url),
+        new ButtonBuilder()
+          .setStyle(ButtonStyle.Primary)
+          .setLabel("Get another random repository")
+          .setCustomId("random")
+          .setDisabled(true)
+      );
 
       await interaction.editReply({ components: [disabledRow] });
     });

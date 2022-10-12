@@ -98,7 +98,8 @@ module.exports = {
       .setTitle("Similar users")
       .setDescription(
         similarUsersArray.join(", ") || "No similar users found."
-      );
+      )
+      .setTimestamp(new Date());
 
     const row = new ActionRowBuilder().addComponents(
       new ButtonBuilder()

@@ -56,7 +56,8 @@ module.exports = {
         { name: "Author", value: release.author.login, inline: true },
         { name: "Published at", value: new Date(release.published_at).toLocaleDateString() + " " + new Date(release.published_at).toLocaleTimeString(), inline: true },
       )
-      .setURL(release.html_url);
+      .setURL(release.html_url)
+      .setTimestamp(new Date());
 
     await interaction.reply({ embeds: [embed] });
   },

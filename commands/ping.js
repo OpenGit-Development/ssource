@@ -26,7 +26,8 @@ module.exports = {
         `Roundtrip latency is ${latency}ms. Websocket heartbeat is ${Math.round(
           client.ws.ping
         )}ms`
-      );
+      )
+      .setTimestamp(new Date());
 
     // create the button
     const row = new ActionRowBuilder().addComponents(
@@ -63,7 +64,8 @@ module.exports = {
             `Roundtrip latency is ${newLatency}ms. Websocket heartbeat is ${Math.round(
               client.ws.ping
             )}ms`
-          );
+          )
+          .setTimestamp(new Date());
 
         // edit the reply and remove the button
         await i.editReply({ content: "Pong!", embeds: [newEmbed], components: [] });

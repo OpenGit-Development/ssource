@@ -130,7 +130,8 @@ module.exports = {
             inline: true,
           };
         })
-      );
+      )
+      .setTimestamp(new Date());
 
     // Create the buttons
     const buttons = new ActionRowBuilder().addComponents(
@@ -199,7 +200,8 @@ module.exports = {
                       inline: true,
                     };
                   })
-                ),
+                )
+                .setTimestamp(new Date()),
             ],
             components: [
               new ActionRowBuilder().addComponents(
@@ -243,7 +245,8 @@ module.exports = {
                   inline: true,
                 };
               })
-            ),
+            )
+            .setTimestamp(new Date()),
         ],
         components: [buttons],
       });

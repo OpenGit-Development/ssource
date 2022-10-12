@@ -30,6 +30,7 @@ module.exports = {
         })
       )
       .setTimestamp(new Date());
+
     await interaction.reply({ embeds: [embed] });
   },
 };
