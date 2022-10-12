@@ -98,7 +98,12 @@ module.exports = {
         results.items.map((item) => {
           return {
             name: item.full_name,
-            value: ( item.description || "No description" ) + "\n" + item.html_url,
+            value:
+              (item.description || "No description") +
+              "\n" +
+              item.html_url +
+              "\n" +
+              `"You can work on ${item.open_issues_count} open issues"`,
             inline: false,
           };
         })
