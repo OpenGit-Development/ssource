@@ -25,8 +25,8 @@ module.exports = {
     ),
 
   async execute(interaction) {
-    const user = interaction.options.getString("query");
-    const limit = interaction.options.getInteger("limit") || 5;
+    const user = await interaction.options.getString("query");
+    const limit = await interaction.options.getInteger("limit") || 5;
 
     const results = await getUser(user);
 

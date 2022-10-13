@@ -70,7 +70,7 @@ module.exports = {
 
     const filter = (i) => i.customId === "random";
 
-    const collector = interaction.channel.createMessageComponentCollector({
+    const collector = await interaction.channel.createMessageComponentCollector({
       filter,
       time: 15000,
     });

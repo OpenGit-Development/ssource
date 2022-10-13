@@ -25,8 +25,8 @@ module.exports = {
     ),
 
   async execute(interaction) {
-    const owner = interaction.options.getString("owner");
-    const repo = interaction.options.getString("repo");
+    const owner = await interaction.options.getString("owner");
+    const repo = await interaction.options.getString("repo");
 
     const release = await getLatestRelease(owner, repo);
 

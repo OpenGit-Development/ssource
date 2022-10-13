@@ -43,7 +43,7 @@ module.exports = {
     const filter = (i) => i.customId === "ping" && i.user.id === interaction.user.id;
 
     // wait for the button to be clicked
-    const collector = interaction.channel.createMessageComponentCollector({
+    const collector = await interaction.channel.createMessageComponentCollector({
       filter,
       time: 15000,
     });
