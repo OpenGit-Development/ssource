@@ -7,6 +7,7 @@ const { DISCORD_BOT_TOKEN } = process.env;
 
 const client = require("./utils/client.js");
 
+// Commands handler
 client.commands = new Collection();
 const commandsPath = path.join(__dirname, "commands");
 const commandFiles = fs
@@ -19,28 +20,21 @@ for (const file of commandFiles) {
   client.commands.set(command.data.name, command);
 }
 
-// On ready
-client.on("ready", () => {
-  console.log(`Logged in as ${client.user.tag}!`);
-});
+// Events handler
+const eventsPath = path.join(__dirname, "events");
+const eventFiles = fs
+  .readdirSync(eventsPath)
+  .filter((file) => file.endsWith(".js"));
 
-client.on("interactionCreate", async (interaction) => {
-  if (!interaction.isChatInputCommand()) return;
-
-  const command = client.commands.get(interaction.commandName);
-
-  if (!command) return;
-
-  try {
-    await command.execute(interaction);
-  } catch (error) {
-    console.error(error);
-    await interaction.reply({
-      content: "There was an error while executing this command!",
-      ephemeral: true,
-    });
+for (const file of eventFiles) {
+  const filePath = path.join(eventsPath, file);
+  const event = require(filePath);
+  if (event.once) {
+    client.once(event.name, (...args) => event.execute(...args));
+  } else {
+    client.on(event.name, (...args) => event.execute(...args));
   }
-});
+}
 
 // Login
 try {
