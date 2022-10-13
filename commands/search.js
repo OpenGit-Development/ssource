@@ -6,6 +6,7 @@ const {
   SlashCommandBuilder,
 } = require("discord.js");
 const { searchRepositories } = require("../api/octokit");
+const { COOLDOWN_DURATION } = process.env;
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -155,11 +156,20 @@ module.exports = {
 
     const collector = interaction.channel.createMessageComponentCollector({
       filter,
-      time: 60000, // 60 seconds
+      time: COOLDOWN_DURATION * 1000,
     });
 
     // Users can keep clicking a button until the collector times out or they reach the end of the embeds
     collector.on("collect", async (i) => {
+      // Make sure it is the same user who sent the command
+      if (i.user.id !== interaction.user.id) {
+        await i.reply({
+          content: "You can't use this button.",
+          ephemeral: true,
+        });
+        return;
+      }
+
       if (i.customId === "previous") {
         if (currentPage === 0) {
           await i.update({
@@ -255,14 +265,12 @@ module.exports = {
     collector.on("end", async (collected) => {
       if (collected.size === 0) {
         await interaction.editReply({
-          embeds: [embed],
           components: [],
         });
       }
 
       // If the collector times out, disable the buttons
       await interaction.editReply({
-        embeds: [embed],
         components: [
           new ActionRowBuilder().addComponents(
             new ButtonBuilder()

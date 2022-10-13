@@ -6,6 +6,7 @@ const {
   SlashCommandBuilder,
 } = require("discord.js");
 const { getRepositoryInfo, getRandomRepository } = require("../api/octokit");
+const { COOLDOWN_DURATION } = process.env;
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -72,11 +73,20 @@ module.exports = {
 
     const collector = interaction.channel.createMessageComponentCollector({
       filter,
-      time: 15000,
+      time: COOLDOWN_DURATION * 1000,
     });
 
     collector.on("collect", async (i) => {
       if (i.customId === "random") {
+        // Make sure it is the same user who sent the command
+        if (i.user.id !== interaction.user.id) {
+          await i.reply({
+            content: "You can't use this button.",
+            ephemeral: true,
+          });
+          return;
+        }
+
         // Get a new random repository
         const newRandomRepository = await getRandomRepository();
 

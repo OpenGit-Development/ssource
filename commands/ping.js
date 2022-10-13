@@ -6,6 +6,7 @@ const {
   SlashCommandBuilder,
 } = require("discord.js");
 const client = require("../utils/client");
+const { COOLDOWN_DURATION } = process.env;
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -38,23 +39,36 @@ module.exports = {
     );
 
     // edit the initial reply
-    await interaction.editReply({ content: "Pong!", embeds: [embed], components: [row] });
-    
-    const filter = (i) => i.customId === "ping" && i.user.id === interaction.user.id;
+    await interaction.editReply({
+      content: "Pong!",
+      embeds: [embed],
+      components: [row],
+    });
+
+    const filter = (i) =>
+      i.customId === "ping" && i.user.id === interaction.user.id;
 
     // wait for the button to be clicked
     const collector = interaction.channel.createMessageComponentCollector({
       filter,
-      time: 15000,
+      time: COOLDOWN_DURATION * 1000,
     });
 
     collector.on("collect", async (i) => {
+      // Make sure it is the same user who sent the command
+      if (i.user.id !== interaction.user.id) {
+        await i.reply({
+          content: "You can't use this button.",
+          ephemeral: true,
+        });
+        return;
+      }
+
       if (i.customId === "ping") {
         // send a new reply
         await i.reply("Pinging...");
         const newReply = await i.fetchReply();
-        const newLatency =
-          newReply.createdTimestamp - i.createdTimestamp;
+        const newLatency = newReply.createdTimestamp - i.createdTimestamp;
 
         // create the embed
         const newEmbed = new EmbedBuilder()
@@ -68,7 +82,11 @@ module.exports = {
           .setTimestamp(new Date());
 
         // edit the reply and remove the button
-        await i.editReply({ content: "Pong!", embeds: [newEmbed], components: [] });
+        await i.editReply({
+          content: "Pong!",
+          embeds: [newEmbed],
+          components: [],
+        });
       }
     });
 
@@ -78,6 +96,5 @@ module.exports = {
         await interaction.editReply({ components: [] });
       }
     });
-    
   },
 };
