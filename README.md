@@ -8,7 +8,7 @@
 
 <!-- about -->
 
-SSource is a Discord bot that allows you to discover open-source projects on GitHub. It is written in JavaScript and uses the Discord.js library.
+SSource is a Discord bot developed by OpenGit that allows you to discover open-source projects on GitHub that you can contribute to. It is written in JavaScript and uses the Discord.js library. It has multiple commands to serve the needs of your discord server members just right! It is built keeping in mind the efficiency, and the user experience at first. It is currently in initial beta testing.
 
 ## Features
 
