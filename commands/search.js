@@ -54,10 +54,10 @@ module.exports = {
     ),
 
   async execute(interaction) {
-    const query = interaction.options.getString("query");
-    const language = interaction.options.getString("language");
-    const limit = interaction.options.getInteger("limit") || 24;
-    const chunk = interaction.options.getInteger("chunk") || 3;
+    const query = await interaction.options.getString("query");
+    const language = await interaction.options.getString("language");
+    const limit = await interaction.options.getInteger("limit") || 24;
+    const chunk = await interaction.options.getInteger("chunk") || 3;
 
     // Limit the maximum number of results to 24
     if (limit > 24) {
@@ -102,7 +102,7 @@ module.exports = {
     const embeds = [];
 
     for (let i = 0; i < results.items.length; i += chunk) {
-      const temp = results.items.slice(i, i + chunk);
+      const temp = await results.items.slice(i, i + chunk);
       embeds.push(temp);
     }
 
@@ -120,7 +120,7 @@ module.exports = {
         } results)`
       )
       .addFields(
-        embeds[currentPage].map((item) => {
+        await embeds[currentPage].map((item) => {
           return {
             name:
               item.full_name +
@@ -153,7 +153,7 @@ module.exports = {
     // Collector stuff
     const filter = (i) => i.customId === "previous" || i.customId === "next";
 
-    const collector = interaction.channel.createMessageComponentCollector({
+    const collector = await interaction.channel.createMessageComponentCollector({
       filter,
       time: 60000, // 60 seconds
     });
